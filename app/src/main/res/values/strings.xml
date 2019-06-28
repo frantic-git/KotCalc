@@ -10,7 +10,7 @@
     <string name="d8">8</string>
     <string name="d9">9</string>
     <string name="d0">0</string>
-    <string name="dot">,</string>
+    <string name="dot">.</string>
 
     <string name="div">:</string>
     <string name="mult">*</string>

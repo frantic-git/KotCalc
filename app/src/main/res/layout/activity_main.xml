@@ -5,10 +5,12 @@
               xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/tvResult" android:layout_weight="3"/>
+            android:layout_height="match_parent" android:id="@+id/tvResult" android:layout_weight="3"
+            style="@style/btnStyleText"/>
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/tvPreview" android:layout_weight="3"/>
+            android:layout_height="match_parent" android:id="@+id/tvPreview" android:layout_weight="3"
+            style="@style/btnStyleText"/>
     <LinearLayout
             android:baselineAligned="false"
             android:orientation="horizontal"
