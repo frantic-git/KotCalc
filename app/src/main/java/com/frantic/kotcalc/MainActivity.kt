@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(){
             num.clear()
             when(v.id){
                 R.id.btnDot->{
-                    num.append("0 ${(v as Button).text}")
+                    num.append("0${(v as Button).text}")
                 }
                 R.id.btnEq->{
                     tvResult.text = result.toString()
@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(){
             }
 
             val curDigit = num.toString().toDouble()
-
             nums.add(curDigit)
 
             when(lastOperation){
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity(){
         }else{
             when(v.id){
                 R.id.btnDot->{
-                    if(num.isEmpty()) num.append("0 ${(v as Button).text}")
+                    if(num.isEmpty()) num.append("0${(v as Button).text}")
                         else{
                             if(num.contains("."))return
                                 else num.append((v as Button).text)
@@ -172,14 +171,21 @@ class MainActivity : AppCompatActivity(){
                         }else{
                             result = result / lastDigit * if(curDigit == null)1.0 else curDigit
                         }
-                        //result = result / lastDigit * if(curDigit == null)1.0 else curDigit
                     }
-                    ":" -> result = result * lastDigit / if(curDigit == null)1.0 else curDigit
+                    ":" ->{
+                        if(lastDigit == 0.0){
+                            if(curDigit == null){
+                                result = nums[nums.size - 1] / 1
+                            }else{
+                                result = nums[nums.size-2] / curDigit
+                            }
+                        }else{
+                            result = result * lastDigit / if(curDigit == null)1.0 else curDigit
+                        }
+                    }
                 }
-
                 tvPreview.text = result.toString()
             }
-
             tvResult.text = operation.toString()
             return
         }
@@ -195,22 +201,36 @@ class MainActivity : AppCompatActivity(){
 
             tvResult.text = operation.toString()
         }else{
-
             if(lastOperation == "="){
-                //в числа добавляем резалт
                 if(num.isEmpty()) {
-                    nums.add(result)
-                    operation.append(result.toString())
+                    if(!nums.isEmpty()) {
+                        nums.add(result)
+                        operation.append(result.toString())
+                    }else{
+                        if((v as Button).text == "-") {
+                            num.append(v.text)
+                            operation.append((v as Button).text)
+                            tvResult.text = operation.toString()
+                            return
+                        }else{
+                            clear()
+                            return
+                        }
+                    }
                 }else{
+
+                    //если тут только "-", что делать?
+
                     val curDigit = num.toString().toDouble()
                     nums.add(curDigit)
+
+
+
                 }
             } else {
                 val curDigit = num.toString().toDouble()
-
                 nums.add(curDigit)
             }
-
             operations.add((v as Button).text.toString())
             operation.append((v).text)
             tvResult.text = operation.toString()
