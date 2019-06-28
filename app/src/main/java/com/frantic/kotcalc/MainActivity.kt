@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity(){
     var operation:StringBuilder = StringBuilder()
     var num:StringBuilder = StringBuilder()
 
-    var lastOperation:String = "="
-    var result:Double = 0.0
+    var lastOperation:StringBuilder = StringBuilder()
 
+    var result:Double = 0.0
     var isOperation:Boolean = false
 
     var operations:ArrayList<String> = ArrayList()
@@ -32,222 +32,206 @@ class MainActivity : AppCompatActivity(){
 
         tvPreview = findViewById(R.id.tvPreview)
         tvResult = findViewById(R.id.tvResult)
+
+        lastOperation.append("=")
     }
 
+    //обработчик чисел
     fun onNumberClick(v:View){
-        if(isOperation){
-            num.clear()
-            when(v.id){
-                R.id.btnDot->{
-                    num.append("0${(v as Button).text}")
-                }
-                R.id.btnEq->{
-                    tvResult.text = result.toString()
-                    clear()
+        var numberName = (v as Button).text.toString()
+        when(v.id){
+            R.id.btnDot->{
+                if(num.isEmpty()){
+                    numberName = "0$numberName"
+                    num.append(numberName)
+                    operation.append(numberName)
+                    isOperation = false
                     return
                 }
-                else -> {
-                    num.append((v as Button).text)
-                }
-            }
-
-            val curDigit = num.toString().toDouble()
-            nums.add(curDigit)
-
-            when(lastOperation){
-                "+" -> result = result + curDigit
-                "-" -> result = result - curDigit
-                "*" -> result = result * curDigit
-                ":" -> result = result / curDigit
-            }
-            Log.d(tag, "isOperation = $isOperation" +
-                    " curDigit = $curDigit" +
-                    " lastOperation = $lastOperation" +
-                    " result = $result")
-            tvPreview.text = result.toString()
-        }else{
-            when(v.id){
-                R.id.btnDot->{
-                    if(num.isEmpty()) num.append("0${(v as Button).text}")
-                        else{
-                            if(num.contains("."))return
-                                else num.append((v as Button).text)
-                    }
-                }
-                R.id.btnEq->{
-                    tvResult.text = result.toString()
-                    clear()
+                if(num.contains("-") && num.length == 1){
+                    numberName = "0$numberName"
+                    num.append(numberName)
+                    operation.append(numberName)
+                    isOperation = false
                     return
                 }
-            else ->{
-                    num.append((v as Button).text)
-                    val curDigit = num.toString().toDouble()
-                    if(lastOperation == "=")
-                        result = curDigit
-                    //иначе у нас последняя операция не "="
-                    else{
-
-                        val lastDigit = nums[nums.size-1]
-
-                        if(num.isEmpty())nums.removeAt(nums.size-1)
-                        else {
-                            nums.removeAt(nums.size-1)
-                            nums.add(curDigit)
-                        }
-
-                        when(lastOperation){
-                            "+" -> result = result - lastDigit + curDigit
-                            "-" -> result = result + lastDigit - curDigit
-                            "*" -> result = if(lastDigit == 0.0)nums[nums.size-2] * curDigit else result / lastDigit * curDigit
-                            ":" -> result = if(lastDigit == 0.0)nums[nums.size-2] / curDigit else result * lastDigit / curDigit
-                        }
-                        tvPreview.text = result.toString()
-                    }
-                }
+            }
+            else->{
+                num.append(numberName)
+                operation.append(numberName)
+                isOperation = false
             }
         }
 
-        Log.d(tag, num.toString())
-        operation.append((v as Button).text)
-        tvResult.text = operation.toString()
-        isOperation = false
+        tvResult.text = operation
     }
 
+    //обработчик операций
     fun onOperationClick(v:View){
 
-        if(v.id == R.id.btnDel){
+        val operatorName = (v as Button).text.toString()
 
-            Log.d(tag, "lastOperation = $lastOperation isOperation = $isOperation")
-
-            if(lastOperation == "="){
-                result = 0.0
-                clear()
-                tvResult.text = operation.toString()
-                return
+        when(v.id){
+            R.id.btnEq->{
+                calcEqually(operatorName)
             }
+            R.id.btnDel->{
 
-            if(num.isEmpty()){
-                if(operations.size>0)operations.removeAt(operations.size-1)
-                if(operation.isNotEmpty())operation.deleteCharAt(operation.length-1)
-
-                if(operations.size>0)lastOperation = operations[operations.size-1]
-                    else lastOperation = "="
-
-                if(nums.size>0){
-                    var s = nums[nums.size-1].toString()
-                    val ms = s.split(".")
-                    val curTail = "0.${ms[ms.size-1]}"
-                    Log.d(tag,"Tail = $curTail")
-                    if(curTail.toDouble() == 0.0)s = ms[0]
-
-                    num.append(s)
-                }
-            }else{
-                if(operation.isNotEmpty())operation.deleteCharAt(operation.length-1)
-                if(num.isNotEmpty())num.deleteCharAt(num.length-1)
-
-                var curDigit:Double? = null
-                if(num.isNotEmpty())
-                    curDigit = num.toString().toDouble()
-
-                val lastDigit = nums[nums.size-1]
-
-                if(num.isEmpty())nums.removeAt(nums.size-1)
-                else {
-                    nums.removeAt(nums.size-1)
-                    if(curDigit != null)nums.add(curDigit)
-                }
-
-                when (lastOperation) {
-                    "+" -> result = result - lastDigit + if(curDigit == null)0.0 else curDigit
-                    "-" -> result = result + lastDigit - if(curDigit == null)0.0 else curDigit
-                    "*" ->{
-                        if(lastDigit == 0.0){
-                            if(curDigit == null){
-                                result = nums[nums.size - 1] * 1
-                            }else {
-                                result = nums[nums.size - 2] * curDigit
-                            }
-                        }else{
-                            result = result / lastDigit * if(curDigit == null)1.0 else curDigit
-                        }
-                    }
-                    ":" ->{
-                        if(lastDigit == 0.0){
-                            if(curDigit == null){
-                                result = nums[nums.size - 1] / 1
-                            }else{
-                                result = nums[nums.size-2] / curDigit
-                            }
-                        }else{
-                            result = result * lastDigit / if(curDigit == null)1.0 else curDigit
-                        }
-                    }
-                }
-                tvPreview.text = result.toString()
             }
-            tvResult.text = operation.toString()
+            R.id.btnPlus->{
+                calcPlus(operatorName)
+            }
+            R.id.btnMinus->{
+                calcMinus(operatorName)
+            }
+            R.id.btnMult->{
+
+            }
+            R.id.btnDiv->{
+
+            }
+        }
+
+        tvResult.text = operation
+    }
+
+    private fun calcMinus(operatorName:String){
+        //если последний оператор равно, представление числа содержит "-" и больше ничего
+        if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length==1)return
+        //если последний оператор равно и представление числа пустое
+        if(lastOperation.toString() == "=" && num.isEmpty()){
+            num.append(operatorName)
+            operation.append(operatorName)
             return
         }
+        //если последний оператор равно, представление числа содержит "-" и еще числа
+        if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length>1){
+            lastOperation.clear()
+            lastOperation.append(operatorName)
+            isOperation = true
 
-//---------------------------------------------------------------
+            result = num.toString().toDouble()
+            num.clear()
 
-        if(isOperation){
-            if(operations.size>0)operations.removeAt(operations.size-1)
-            operations.add((v as Button).text.toString())
-
-            if(operation.isNotEmpty())operation.deleteCharAt(operation.length-1)
-            operation.append(v.text)
-
-            tvResult.text = operation.toString()
-        }else{
-            if(lastOperation == "="){
-                if(num.isEmpty()) {
-                    if(!nums.isEmpty()) {
-                        nums.add(result)
-                        operation.append(result.toString())
-                    }else{
-                        if((v as Button).text == "-") {
-                            num.append(v.text)
-                            operation.append((v as Button).text)
-                            tvResult.text = operation.toString()
-                            return
-                        }else{
-                            clear()
-                            return
-                        }
-                    }
-                }else{
-
-                    //если тут только "-", что делать?
-
-                    val curDigit = num.toString().toDouble()
-                    nums.add(curDigit)
-
-
-
-                }
-            } else {
-                val curDigit = num.toString().toDouble()
-                nums.add(curDigit)
-            }
-            operations.add((v as Button).text.toString())
-            operation.append((v).text)
-            tvResult.text = operation.toString()
+            operation.append(operatorName)
+            return
         }
-        lastOperation = v.text.toString()
-        isOperation = true
-    }
+        //если последний оператор равно, представление не содержит "-", но имеются числа
+        if(lastOperation.toString() == "=" && !num.contains(operatorName) && num.isNotEmpty()){
+            lastOperation.clear()
+            lastOperation.append(operatorName)
+            isOperation = true
 
-    private fun clear(){
-        tvPreview.text = ""
+            result = num.toString().toDouble()
+            num.clear()
 
-        operations.clear()
-        nums.clear()
+            operation.append(operatorName)
+            return
+        }
+        //если последний оператор не равно, последнее событие "операция"
+        if(isOperation){
+            when(lastOperation.toString()){
+                operatorName->return
+                "+"->{
+                    lastOperation.clear()
+                    lastOperation.append(operatorName)
+
+                    operation.deleteCharAt(operation.length-1)
+                    operation.append(operatorName)
+                    return
+                }
+                else->{
+                    isOperation=false
+                    num.append(operatorName)
+                    operation.append(operatorName)
+                    return
+                }
+            }
+        }
+        //если последний оператор не равно, последнее событие "число"
+        val curDigit = num.toString().toDouble()
+        when(lastOperation.toString()){
+            "+"->result = result + curDigit
+            "-"->result = result - curDigit
+            "*"->result = result * curDigit
+            ":"->if (curDigit == 0.0){
+                    Log.d(tag, "Divided by zero!!")
+                    return
+                }else result = result / curDigit
+        }
+
+        lastOperation.clear()
+        lastOperation.append("=")
+        num.clear()
+        num.append(operatorName)
 
         operation.clear()
+        operation.append(result.toString())
+        operation.append(operatorName)
+    }
+
+    private fun calcPlus(operatorName:String){
+        //если последний оператор равно, представление числа содержит "+" и больше ничего
+        //if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length==1)return
+
+        //если последний оператор равно и представление числа пустое
+        if(lastOperation.toString() == "=" && num.isEmpty())return
+        //если последний оператор равно, представление числа содержит тольо "-"
+        if(lastOperation.toString() == "=" && num.contains("-") && num.length==1){
+            num.clear()
+            operation.deleteCharAt(operation.length-1)
+            return
+        }
+        //если последний оператор равно, представление числа содержит "+" и еще числа
+        if(lastOperation.toString() == "=" && num.isNotEmpty()){
+            lastOperation.clear()
+            lastOperation.append(operatorName)
+            isOperation = true
+
+            result = num.toString().toDouble()
+            num.clear()
+
+            operation.append(operatorName)
+            return
+        }
+        //если последний оператор не равно, последнее событие "операция"
+        if(isOperation){
+            when(lastOperation.toString()){
+                operatorName->return
+                else->{
+                    lastOperation.clear()
+                    lastOperation.append(operatorName)
+
+                    operation.deleteCharAt(operation.length-1)
+                    operation.append(operatorName)
+                    return
+                }
+            }
+        }
+        //если последний оператор не равно, последнее событие "число"
+        val curDigit = num.toString().toDouble()
+        when(lastOperation.toString()){
+            "+"->result = result + curDigit
+            "-"->result = result - curDigit
+            "*"->result = result * curDigit
+            ":"->if (curDigit == 0.0){
+                Log.d(tag, "Divided by zero!!")
+                return
+            }else result = result / curDigit
+        }
+
+        lastOperation.clear()
+        lastOperation.append("=")
         num.clear()
-        isOperation = false
-        lastOperation = "="
+        num.append(operatorName)
+
+        operation.clear()
+        operation.append(result.toString())
+        operation.append(operatorName)
+    }
+
+    private fun calcEqually(operatorName: String){
+
     }
 }
+
