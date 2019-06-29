@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity(){
 
     lateinit var tvPreview:TextView
     lateinit var tvResult:TextView
+    lateinit var btnDel:Button
 
     var operation:StringBuilder = StringBuilder()
     var num:StringBuilder = StringBuilder()
@@ -24,8 +25,8 @@ class MainActivity : AppCompatActivity(){
 
     var result:Double = 0.0
     var isOperation:Boolean = false
-
     var isDivByZero:Boolean = false
+    var isCLR:Boolean = false
 
     var operations:ArrayList<String> = ArrayList()
     var nums:ArrayList<Double> = ArrayList()
@@ -36,12 +37,19 @@ class MainActivity : AppCompatActivity(){
 
         tvPreview = findViewById(R.id.tvPreview)
         tvResult = findViewById(R.id.tvResult)
+        btnDel = findViewById(R.id.btnDel)
 
         lastOperation.append("=")
     }
 
     //обработчик чисел
     fun onNumberClick(v:View){
+
+        if(isCLR) {
+            isCLR = false
+            btnDel.text = getString(R.string.del)
+        }
+
         var numberName = (v as Button).text.toString()
 
         if(v.id == R.id.btnDot){
@@ -49,6 +57,8 @@ class MainActivity : AppCompatActivity(){
             if(num.contains("-") && num.length == 1) numberName = "0$numberName"
             if(num.contains("."))return
         }
+
+        if(v.id == R.id.btn0 && num.toString() == "0")return
 
         num.append(numberName)
         operation.append(numberName)
@@ -80,6 +90,10 @@ class MainActivity : AppCompatActivity(){
             R.id.btnDiv->{
                 calcDiv(operatorName)
             }
+        }
+        if(v.id != R.id.btnEq){
+            isCLR = false
+            btnDel.text = getString(R.string.del)
         }
         if(isDivByZero){
             tvResult.text = getString(R.string.dividedByZero)
@@ -300,10 +314,39 @@ class MainActivity : AppCompatActivity(){
         num.append(takeDoubleWithoutTail(result))
         operation.clear()
         operation.append(num)
+
+        isCLR = true
+        btnDel.text = getString(R.string.clr)
     }
 
     private fun calcDelete(operatorName: String){
-        calcClear()
+
+        if(isCLR){
+            calcClear()
+            isCLR = false
+            btnDel.text = getString(R.string.del)
+            return
+        }
+
+        if(lastOperation.toString() == "="){
+            num.deleteCharAt(num.length-1)
+            operation.deleteCharAt(operation.length-1)
+            return
+        }
+
+        if(isOperation){
+            lastOperation.clear()
+            lastOperation.append("=")
+            operation.deleteCharAt(operation.length-1)
+            num.append(takeDoubleWithoutTail(result))
+            result = 0.0
+            return
+        }
+
+        num.deleteCharAt(num.length-1)
+        operation.deleteCharAt(operation.length-1)
+        if(num.isEmpty() && lastOperation.toString() != "=")isOperation = true
+
     }
 
     fun takeDoubleWithoutTail(res:Double):String{
