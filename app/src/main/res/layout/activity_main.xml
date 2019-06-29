@@ -5,7 +5,11 @@
               xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/tvResult" android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:id="@+id/tvResult"
+            android:layout_weight="3"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             style="@style/btnStyleText"/>
     <TextView
             android:layout_width="match_parent"
@@ -15,7 +19,10 @@
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="match_parent"
                       android:orientation="vertical"

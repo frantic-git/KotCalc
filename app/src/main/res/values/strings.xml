@@ -19,4 +19,6 @@
     <string name="plus">+</string>
     <string name="del">DEL</string>
 
+    <string name="dividedByZero">Divided by zero</string>
+
 </resources>
