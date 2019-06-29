@@ -1,5 +1,8 @@
 package com.frantic.kotcalc
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.IntegerRes
@@ -7,37 +10,35 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(),View.OnLongClickListener{
 
     private val tag = "calc_log"
 
-    lateinit var tvPreview:TextView
     lateinit var tvResult:TextView
     lateinit var btnDel:Button
 
     var operation:StringBuilder = StringBuilder()
     var num:StringBuilder = StringBuilder()
-
     var lastOperation:StringBuilder = StringBuilder()
 
     var result:Double = 0.0
+
     var isOperation:Boolean = false
     var isDivByZero:Boolean = false
     var isCLR:Boolean = false
-
-    var operations:ArrayList<String> = ArrayList()
-    var nums:ArrayList<Double> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tvPreview = findViewById(R.id.tvPreview)
         tvResult = findViewById(R.id.tvResult)
         btnDel = findViewById(R.id.btnDel)
+        tvResult.setOnLongClickListener(this)
+        btnDel.setOnLongClickListener(this)
 
         lastOperation.append("=")
     }
@@ -76,25 +77,19 @@ class MainActivity : AppCompatActivity(){
                 calcEqually(operatorName)
             }
             R.id.btnDel->{
-                calcDelete(operatorName)
-            }
-            R.id.btnPlus->{
-                calcPlus(operatorName)
+                calcDelete()
             }
             R.id.btnMinus->{
                 calcMinus(operatorName)
             }
-            R.id.btnMult->{
-                calcMult(operatorName)
-            }
-            R.id.btnDiv->{
-                calcDiv(operatorName)
-            }
+            else->calcOperation(operatorName)
         }
+
         if(v.id != R.id.btnEq){
             isCLR = false
             btnDel.text = getString(R.string.del)
         }
+
         if(isDivByZero){
             tvResult.text = getString(R.string.dividedByZero)
             isDivByZero = false
@@ -103,46 +98,41 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun calcMinus(operatorName:String){
-        //если последний оператор равно, представление числа содержит "-" и больше ничего
+
         if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length==1)return
-        //если последний оператор равно и представление числа пустое
+
         if(lastOperation.toString() == "=" && num.isEmpty()){
             num.append(operatorName)
             operation.append(operatorName)
             return
         }
-        //если последний оператор равно, представление числа содержит "-" и еще числа
+
         if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length>1){
             lastOperation.clear()
             lastOperation.append(operatorName)
             isOperation = true
-
             result = num.toString().toDouble()
             num.clear()
-
             operation.append(operatorName)
             return
         }
-        //если последний оператор равно, представление не содержит "-", но имеются числа
+
         if(lastOperation.toString() == "=" && !num.contains(operatorName) && num.isNotEmpty()){
             lastOperation.clear()
             lastOperation.append(operatorName)
             isOperation = true
-
             result = num.toString().toDouble()
             num.clear()
-
             operation.append(operatorName)
             return
         }
-        //если последний оператор не равно, последнее событие "операция"
+
         if(isOperation){
             when(lastOperation.toString()){
                 operatorName->return
                 "+"->{
                     lastOperation.clear()
                     lastOperation.append(operatorName)
-
                     operation.deleteCharAt(operation.length-1)
                     operation.append(operatorName)
                     return
@@ -155,26 +145,21 @@ class MainActivity : AppCompatActivity(){
                 }
             }
         }
-        //если последний оператор не равно, последнее событие "число"
+
         calcResult()
-
-        isOperation = true
-        lastOperation.clear()
-        lastOperation.append(operatorName)
-        num.clear()
-
-        operation.clear()
-        operation.append(takeDoubleWithoutTail(result))
-        operation.append(operatorName)
+        updateOperationView(operatorName)
     }
 
-    private fun calcPlus(operatorName:String){
+    private fun calcOperation(operatorName:String){
+
         if(lastOperation.toString() == "=" && num.isEmpty())return
+
         if(lastOperation.toString() == "=" && num.contains("-") && num.length==1){
             num.clear()
             operation.deleteCharAt(operation.length-1)
             return
         }
+
         if(lastOperation.toString() == "=" && num.isNotEmpty()){
             lastOperation.clear()
             lastOperation.append(operatorName)
@@ -186,7 +171,7 @@ class MainActivity : AppCompatActivity(){
             operation.append(operatorName)
             return
         }
-        //если последний оператор не равно, последнее событие "операция"
+
         if(isOperation){
             when(lastOperation.toString()){
                 operatorName->return
@@ -200,111 +185,25 @@ class MainActivity : AppCompatActivity(){
                 }
             }
         }
-        //если последний оператор не равно, последнее событие "число"
+
         calcResult()
-
-        isOperation = true
-        lastOperation.clear()
-        lastOperation.append(operatorName)
-        num.clear()
-
-        operation.clear()
-        operation.append(takeDoubleWithoutTail(result))
-        operation.append(operatorName)
+        updateOperationView(operatorName)
     }
 
-    private fun calcMult(operatorName: String){
-        if(lastOperation.toString() == "=" && num.isEmpty())return
-        if(lastOperation.toString() == "=" && num.contains("-") && num.length==1){
-            num.clear()
-            operation.deleteCharAt(operation.length-1)
-            return
-        }
-        if(lastOperation.toString() == "=" && num.isNotEmpty()){
-            lastOperation.clear()
-            lastOperation.append(operatorName)
-            isOperation = true
-
-            result = num.toString().toDouble()
-            num.clear()
-
-            operation.append(operatorName)
-            return
-        }
-        //если последний оператор не равно, последнее событие "операция"
-        if(isOperation){
-            when(lastOperation.toString()){
-                operatorName->return
-                else->{
-                    lastOperation.clear()
-                    lastOperation.append(operatorName)
-
-                    operation.deleteCharAt(operation.length-1)
-                    operation.append(operatorName)
-                    return
-                }
-            }
-        }
-        calcResult()
-
+    private fun updateOperationView(operatorName: String){
         isOperation = true
         lastOperation.clear()
         lastOperation.append(operatorName)
         num.clear()
-
-        operation.clear()
-        operation.append(takeDoubleWithoutTail(result))
-        operation.append(operatorName)
-    }
-
-    private fun calcDiv(operatorName: String){
-        if(lastOperation.toString() == "=" && num.isEmpty())return
-        if(lastOperation.toString() == "=" && num.contains("-") && num.length==1){
-            num.clear()
-            operation.deleteCharAt(operation.length-1)
-            return
-        }
-        if(lastOperation.toString() == "=" && num.isNotEmpty()){
-            lastOperation.clear()
-            lastOperation.append(operatorName)
-            isOperation = true
-
-            result = num.toString().toDouble()
-            num.clear()
-
-            operation.append(operatorName)
-            return
-        }
-        //если последний оператор не равно, последнее событие "операция"
-        if(isOperation){
-            when(lastOperation.toString()){
-                operatorName->return
-                else->{
-                    lastOperation.clear()
-                    lastOperation.append(operatorName)
-
-                    operation.deleteCharAt(operation.length-1)
-                    operation.append(operatorName)
-                    return
-                }
-            }
-        }
-        calcResult()
-
-        isOperation = true
-        lastOperation.clear()
-        lastOperation.append(operatorName)
-        num.clear()
-
         operation.clear()
         operation.append(takeDoubleWithoutTail(result))
         operation.append(operatorName)
     }
 
     private fun calcEqually(operatorName: String){
-        //если последний оператор равно и последнее действие число
+
         if(lastOperation.toString() == operatorName && !isOperation)return
-        //если последний оператор не равно, последнее событие "число"
+
         if(num.isNotEmpty())calcResult()
 
         isOperation = false
@@ -319,7 +218,7 @@ class MainActivity : AppCompatActivity(){
         btnDel.text = getString(R.string.clr)
     }
 
-    private fun calcDelete(operatorName: String){
+    private fun calcDelete(){
 
         if(isCLR){
             calcClear()
@@ -346,7 +245,6 @@ class MainActivity : AppCompatActivity(){
         num.deleteCharAt(num.length-1)
         operation.deleteCharAt(operation.length-1)
         if(num.isEmpty() && lastOperation.toString() != "=")isOperation = true
-
     }
 
     fun takeDoubleWithoutTail(res:Double):String{
@@ -361,7 +259,7 @@ class MainActivity : AppCompatActivity(){
     fun calcResult(){
         val curDigit = num.toString().toDouble()
         when(lastOperation.toString()){
-            "+"-> result += curDigit
+            "+"->result += curDigit
             "-"->result -= curDigit
             "*"->result *= curDigit
             ":"->if (curDigit == 0.0){
@@ -379,6 +277,28 @@ class MainActivity : AppCompatActivity(){
         operation.clear()
         num.clear()
         result=0.0
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        if(v!=null){
+            when(v.id){
+                R.id.btnDel->{
+                    calcClear()
+                    isCLR = false
+                    btnDel.text = getString(R.string.del)
+                    tvResult.text = operation
+                    Toast.makeText(this,"Cleared",Toast.LENGTH_SHORT).show()
+                }
+                R.id.tvResult->{
+                    val clipBoard:ClipboardManager = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText("",tvResult.text.toString())
+                    clipBoard.primaryClip = clip
+                    Toast.makeText(this,"Copied to the ClipBoard",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        return true
     }
 }
 
