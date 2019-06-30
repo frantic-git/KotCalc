@@ -14,24 +14,24 @@ import android.widget.Toast
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(),View.OnLongClickListener{
+class MainActivity : AppCompatActivity(), View.OnLongClickListener {
 
     private val tag = "calc_log"
 
-    lateinit var tvResult:TextView
-    lateinit var btnDel:Button
+    lateinit var tvResult: TextView
+    lateinit var btnDel: Button
 
-    var operation:StringBuilder = StringBuilder()
-    var num:StringBuilder = StringBuilder()
-    var lastOperation:StringBuilder = StringBuilder()
+    var operation: StringBuilder = StringBuilder()
+    var num: StringBuilder = StringBuilder()
+    var lastOperation: StringBuilder = StringBuilder()
 
-    var result:Double = 0.0
+    var result: Double = 0.0
 
-    var isOperation:Boolean = false
-    var isDivByZero:Boolean = false
-    var isCLR:Boolean = false
+    var isOperation: Boolean = false
+    var isDivByZero: Boolean = false
+    var isCLR: Boolean = false
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -44,22 +44,22 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
     }
 
     //обработчик чисел
-    fun onNumberClick(v:View){
+    fun onNumberClick(v: View) {
 
-        if(isCLR) {
+        if (isCLR) {
             isCLR = false
             btnDel.text = getString(R.string.del)
         }
 
         var numberName = (v as Button).text.toString()
 
-        if(v.id == R.id.btnDot){
-            if(num.isEmpty()) numberName = "0$numberName"
-            if(num.contains("-") && num.length == 1) numberName = "0$numberName"
-            if(num.contains("."))return
+        if (v.id == R.id.btnDot) {
+            if (num.isEmpty()) numberName = "0$numberName"
+            if (num.contains("-") && num.length == 1) numberName = "0$numberName"
+            if (num.contains(".")) return
         }
 
-        if(v.id == R.id.btn0 && num.toString() == "0")return
+        if (v.id == R.id.btn0 && num.toString() == "0") return
 
         num.append(numberName)
         operation.append(numberName)
@@ -68,46 +68,46 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
     }
 
     //обработчик операций
-    fun onOperationClick(v:View){
+    fun onOperationClick(v: View) {
 
         val operatorName = (v as Button).text.toString()
 
-        when(v.id){
-            R.id.btnEq->{
+        when (v.id) {
+            R.id.btnEq -> {
                 calcEqually(operatorName)
             }
-            R.id.btnDel->{
+            R.id.btnDel -> {
                 calcDelete()
             }
-            R.id.btnMinus->{
+            R.id.btnMinus -> {
                 calcMinus(operatorName)
             }
-            else->calcOperation(operatorName)
+            else -> calcOperation(operatorName)
         }
 
-        if(v.id != R.id.btnEq){
+        if (v.id != R.id.btnEq) {
             isCLR = false
             btnDel.text = getString(R.string.del)
         }
 
-        if(isDivByZero){
+        if (isDivByZero) {
             tvResult.text = getString(R.string.dividedByZero)
             isDivByZero = false
             calcClear()
-        }else tvResult.text = operation
+        } else tvResult.text = operation
     }
 
-    private fun calcMinus(operatorName:String){
+    private fun calcMinus(operatorName: String) {
 
-        if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length==1)return
+        if (lastOperation.toString() == "=" && num.contains(operatorName) && num.length == 1) return
 
-        if(lastOperation.toString() == "=" && num.isEmpty()){
+        if (lastOperation.toString() == "=" && num.isEmpty()) {
             num.append(operatorName)
             operation.append(operatorName)
             return
         }
 
-        if(lastOperation.toString() == "=" && num.contains(operatorName) && num.length>1){
+        if (lastOperation.toString() == "=" && num.contains(operatorName) && num.length > 1) {
             lastOperation.clear()
             lastOperation.append(operatorName)
             isOperation = true
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
             return
         }
 
-        if(lastOperation.toString() == "=" && !num.contains(operatorName) && num.isNotEmpty()){
+        if (lastOperation.toString() == "=" && !num.contains(operatorName) && num.isNotEmpty()) {
             lastOperation.clear()
             lastOperation.append(operatorName)
             isOperation = true
@@ -127,18 +127,18 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
             return
         }
 
-        if(isOperation){
-            when(lastOperation.toString()){
-                operatorName->return
-                "+"->{
+        if (isOperation) {
+            when (lastOperation.toString()) {
+                operatorName -> return
+                "+" -> {
                     lastOperation.clear()
                     lastOperation.append(operatorName)
-                    operation.deleteCharAt(operation.length-1)
+                    operation.deleteCharAt(operation.length - 1)
                     operation.append(operatorName)
                     return
                 }
-                else->{
-                    isOperation=false
+                else -> {
+                    isOperation = false
                     num.append(operatorName)
                     operation.append(operatorName)
                     return
@@ -150,17 +150,17 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
         updateOperationView(operatorName)
     }
 
-    private fun calcOperation(operatorName:String){
+    private fun calcOperation(operatorName: String) {
 
-        if(lastOperation.toString() == "=" && num.isEmpty())return
+        if (lastOperation.toString() == "=" && num.isEmpty()) return
 
-        if(lastOperation.toString() == "=" && num.contains("-") && num.length==1){
+        if (lastOperation.toString() == "=" && num.contains("-") && num.length == 1) {
             num.clear()
-            operation.deleteCharAt(operation.length-1)
+            operation.deleteCharAt(operation.length - 1)
             return
         }
 
-        if(lastOperation.toString() == "=" && num.isNotEmpty()){
+        if (lastOperation.toString() == "=" && num.isNotEmpty()) {
             lastOperation.clear()
             lastOperation.append(operatorName)
             isOperation = true
@@ -172,14 +172,14 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
             return
         }
 
-        if(isOperation){
-            when(lastOperation.toString()){
-                operatorName->return
-                else->{
+        if (isOperation) {
+            when (lastOperation.toString()) {
+                operatorName -> return
+                else -> {
                     lastOperation.clear()
                     lastOperation.append(operatorName)
 
-                    operation.deleteCharAt(operation.length-1)
+                    operation.deleteCharAt(operation.length - 1)
                     operation.append(operatorName)
                     return
                 }
@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
         updateOperationView(operatorName)
     }
 
-    private fun updateOperationView(operatorName: String){
+    private fun updateOperationView(operatorName: String) {
         isOperation = true
         lastOperation.clear()
         lastOperation.append(operatorName)
@@ -200,11 +200,11 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
         operation.append(operatorName)
     }
 
-    private fun calcEqually(operatorName: String){
+    private fun calcEqually(operatorName: String) {
 
-        if(lastOperation.toString() == operatorName && !isOperation)return
+        if (lastOperation.toString() == operatorName && !isOperation) return
 
-        if(num.isNotEmpty())calcResult()
+        if (num.isNotEmpty()) calcResult()
 
         isOperation = false
         lastOperation.clear()
@@ -218,82 +218,83 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
         btnDel.text = getString(R.string.clr)
     }
 
-    private fun calcDelete(){
+    private fun calcDelete() {
 
-        if(isCLR){
+        if (isCLR) {
             calcClear()
             isCLR = false
             btnDel.text = getString(R.string.del)
             return
         }
 
-        if(lastOperation.toString() == "="){
-            num.deleteCharAt(num.length-1)
-            operation.deleteCharAt(operation.length-1)
+        if (lastOperation.toString() == "=") {
+            num.deleteCharAt(num.length - 1)
+            operation.deleteCharAt(operation.length - 1)
             return
         }
 
-        if(isOperation){
+        if (isOperation) {
             lastOperation.clear()
             lastOperation.append("=")
-            operation.deleteCharAt(operation.length-1)
+            operation.deleteCharAt(operation.length - 1)
             num.append(takeDoubleWithoutTail(result))
             result = 0.0
             return
         }
 
-        num.deleteCharAt(num.length-1)
-        operation.deleteCharAt(operation.length-1)
-        if(num.isEmpty() && lastOperation.toString() != "=")isOperation = true
+        num.deleteCharAt(num.length - 1)
+        operation.deleteCharAt(operation.length - 1)
+        if (num.isEmpty() && lastOperation.toString() != "=") isOperation = true
     }
 
-    fun takeDoubleWithoutTail(res:Double):String{
-        result = Formatter().format("%.10f",res).toString().replace(",",".").toDouble()
+    fun takeDoubleWithoutTail(res: Double): String {
+        result = Formatter().format("%.10f", res).toString().replace(",", ".").toDouble()
         val s = result.toString()
         val ms = s.split(".")
-        val curTail = "0.${ms[ms.size-1]}"
-        if(curTail.toDouble() == 0.0)return ms[0]
+        val curTail = "0.${ms[ms.size - 1]}"
+        if (curTail.toDouble() == 0.0) return ms[0]
         return s
     }
 
-    fun calcResult(){
+    fun calcResult() {
         val curDigit = num.toString().toDouble()
-        when(lastOperation.toString()){
-            "+"->result += curDigit
-            "-"->result -= curDigit
-            "*"->result *= curDigit
-            ":"->if (curDigit == 0.0){
+        when (lastOperation.toString()) {
+            "+" -> result += curDigit
+            "-" -> result -= curDigit
+            "*" -> result *= curDigit
+            ":" -> if (curDigit == 0.0) {
                 Log.d(tag, "Divided by zero!!")
                 isDivByZero = true
                 return
-            }else result /= curDigit
+            } else result /= curDigit
         }
     }
 
-    private fun calcClear(){
-        isOperation=false
+    private fun calcClear() {
+        isOperation = false
         lastOperation.clear()
         lastOperation.append("=")
         operation.clear()
         num.clear()
-        result=0.0
+        result = 0.0
     }
 
     override fun onLongClick(v: View?): Boolean {
-        if(v!=null){
-            when(v.id){
-                R.id.btnDel->{
+        if (v != null) {
+            when (v.id) {
+                R.id.btnDel -> {
                     calcClear()
                     isCLR = false
                     btnDel.text = getString(R.string.del)
                     tvResult.text = operation
-                    Toast.makeText(this,"Cleared",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show()
                 }
-                R.id.tvResult->{
-                    val clipBoard:ClipboardManager = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText("",tvResult.text.toString())
+                R.id.tvResult -> {
+                    val clipBoard: ClipboardManager =
+                        this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip = ClipData.newPlainText("", tvResult.text.toString())
                     clipBoard.primaryClip = clip
-                    Toast.makeText(this,"Copied to the ClipBoard",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Copied to the ClipBoard", Toast.LENGTH_SHORT).show()
                 }
             }
         }
