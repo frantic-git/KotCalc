@@ -9,9 +9,11 @@
     </style>
 
     <style name="btnStyleText">
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/colorGreen</item>
         <item name="android:typeface">monospace</item>
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
 </resources>

@@ -7,13 +7,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/tvResult"
-            android:layout_weight="3"
+            android:layout_weight="5"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            style="@style/btnStyleText"/>
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/tvPreview" android:layout_weight="3"
             style="@style/btnStyleText"/>
     <LinearLayout
             android:baselineAligned="false"
@@ -147,26 +143,30 @@
             <Button
                     android:text="@string/div"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnDiv" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/btnDiv" android:layout_weight="3"
                     android:onClick="onOperationClick"
+                    android:layout_gravity="center"
                     style="@style/btnStyleText"/>
             <Button
                     android:text="@string/mult"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnMult" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/btnMult" android:layout_weight="3"
                     android:onClick="onOperationClick"
+                    android:layout_gravity="center"
                     style="@style/btnStyleText"/>
             <Button
                     android:text="@string/minus"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnMinus" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/btnMinus" android:layout_weight="3"
                     android:onClick="onOperationClick"
+                    android:layout_gravity="center"
                     style="@style/btnStyleText"/>
             <Button
                     android:text="@string/plus"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btnPlus" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:id="@+id/btnPlus" android:layout_weight="3"
                     android:onClick="onOperationClick"
+                    android:layout_gravity="center"
                     style="@style/btnStyleText"/>
         </LinearLayout>
     </LinearLayout>

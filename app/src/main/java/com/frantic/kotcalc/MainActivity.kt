@@ -300,5 +300,30 @@ class MainActivity : AppCompatActivity(),View.OnLongClickListener{
 
         return true
     }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState!!.putString("operation", operation.toString())
+        outState.putString("num", num.toString())
+        outState.putString("lastOperation", lastOperation.toString())
+        outState.putDouble("result", result)
+        outState.putBoolean("isOperation", isOperation)
+        outState.putBoolean("isDivByZero", isDivByZero)
+        outState.putBoolean("isCLR", isCLR)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        operation.append(savedInstanceState!!.getString("operation"))
+        num.append(savedInstanceState.getString("num"))
+        lastOperation.clear()
+        lastOperation.append(savedInstanceState.getString("lastOperation"))
+        result = savedInstanceState.getDouble("result")
+        isOperation = savedInstanceState.getBoolean("isOperation")
+        isDivByZero = savedInstanceState.getBoolean("isDivByZero")
+        isCLR = savedInstanceState.getBoolean("isCLR")
+
+        tvResult.text = operation
+    }
 }
 
