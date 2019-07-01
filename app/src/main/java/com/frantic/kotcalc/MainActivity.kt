@@ -5,21 +5,16 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.annotation.IntegerRes
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), View.OnLongClickListener {
+class MainActivity : AppCompatActivity() {
 
     private val tag = "calc_log"
-
-    lateinit var tvResult: TextView
-    lateinit var btnDel: Button
 
     var operation: StringBuilder = StringBuilder()
     var num: StringBuilder = StringBuilder()
@@ -35,15 +30,12 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tvResult = findViewById(R.id.tvResult)
-        btnDel = findViewById(R.id.btnDel)
-        tvResult.setOnLongClickListener(this)
-        btnDel.setOnLongClickListener(this)
+        tvResult.setOnLongClickListener { onBtnDelLongClick() }
+        btnDel.setOnLongClickListener { onTvResultLongClick() }
 
         lastOperation.append("=")
     }
 
-    //обработчик чисел
     fun onNumberClick(v: View) {
 
         if (isCLR) {
@@ -67,7 +59,6 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         tvResult.text = operation
     }
 
-    //обработчик операций
     fun onOperationClick(v: View) {
 
         val operatorName = (v as Button).text.toString()
@@ -279,26 +270,21 @@ class MainActivity : AppCompatActivity(), View.OnLongClickListener {
         result = 0.0
     }
 
-    override fun onLongClick(v: View?): Boolean {
-        if (v != null) {
-            when (v.id) {
-                R.id.btnDel -> {
-                    calcClear()
-                    isCLR = false
-                    btnDel.text = getString(R.string.del)
-                    tvResult.text = operation
-                    Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show()
-                }
-                R.id.tvResult -> {
-                    val clipBoard: ClipboardManager =
-                        this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText("", tvResult.text.toString())
-                    clipBoard.primaryClip = clip
-                    Toast.makeText(this, "Copied to the ClipBoard", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    private fun onBtnDelLongClick(): Boolean {
+        calcClear()
+        isCLR = false
+        btnDel.text = getString(R.string.del)
+        tvResult.text = operation
+        Toast.makeText(this, "Cleared", Toast.LENGTH_SHORT).show()
+        return true
+    }
 
+    private fun onTvResultLongClick(): Boolean {
+        val clipBoard: ClipboardManager =
+            this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("", tvResult.text.toString())
+        clipBoard.primaryClip = clip
+        Toast.makeText(this, "Copied to the ClipBoard", Toast.LENGTH_SHORT).show()
         return true
     }
 
