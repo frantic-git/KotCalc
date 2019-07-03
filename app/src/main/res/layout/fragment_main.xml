@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                              xmlns:app="http://schemas.android.com/apk/res-auto"
                                              android:layout_width="match_parent"
-                                             android:layout_height="match_parent">
+                                             android:layout_height="match_parent"
+                                             android:id="@+id/consraint_fr1">
     <TextView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -28,7 +29,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:id="@+id/btn7"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d8"
@@ -40,7 +40,6 @@
             app:layout_constraintEnd_toStartOf="@id/btn9"
             app:layout_constraintBottom_toTopOf="@id/btn5"
             android:id="@+id/btn8"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
     <Button
             android:text="@string/d9"
@@ -53,7 +52,6 @@
             app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:layout_constraintStart_toEndOf="@+id/btn8"
             android:id="@+id/btn9"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d4"
@@ -66,7 +64,6 @@
             app:layout_constraintEnd_toStartOf="@+id/btn5"
             app:layout_constraintBottom_toTopOf="@+id/btn1"
             android:id="@+id/btn4"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d5"
@@ -77,7 +74,6 @@
             app:layout_constraintEnd_toStartOf="@+id/btn6"
             app:layout_constraintBottom_toTopOf="@+id/btn2"
             android:id="@+id/btn5"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d6"
@@ -90,7 +86,6 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintBottom_toTopOf="@+id/btn3"
             android:id="@+id/btn6"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d1"
@@ -102,7 +97,6 @@
             app:layout_constraintEnd_toStartOf="@+id/btn2"
             app:layout_constraintBottom_toTopOf="@+id/btnDot"
             android:id="@+id/btn1"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d2"
@@ -115,7 +109,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:id="@+id/btn2"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d3"
@@ -127,7 +120,6 @@
             app:layout_constraintTop_toBottomOf="@id/btn6"
             app:layout_constraintBottom_toTopOf="@+id/btnEq"
             android:id="@+id/btn3"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
 
     <Button
@@ -141,7 +133,6 @@
             app:layout_constraintEnd_toStartOf="@+id/btn0"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btnDot"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/d0"
@@ -155,7 +146,6 @@
             app:layout_constraintEnd_toStartOf="@+id/btnEq"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btn0"
-            android:onClick="onNumberClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/equally"
@@ -168,7 +158,6 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btnEq"
-            android:onClick="onOperationClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/del"
@@ -177,11 +166,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btnDiv"
-            android:id="@+id/btnDel"
-            android:onClick="onOperationClick"/>
+            android:id="@+id/btnDel"/>
     <Button
             android:text="@string/div"
             android:layout_width="0dp"
@@ -189,11 +177,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/btnDel"
+            app:layout_constraintTop_toBottomOf="@+id/btnDel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btnMult"
             android:id="@+id/btnDiv"
-            android:onClick="onOperationClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/mult"
@@ -206,7 +193,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btnMinus"
             android:id="@+id/btnMult"
-            android:onClick="onOperationClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/minus"
@@ -219,7 +205,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btnPlus"
             android:id="@+id/btnMinus"
-            android:onClick="onOperationClick"
             style="@style/btnStyleText"/>
     <Button
             android:text="@string/plus"
@@ -233,7 +218,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btnPlus"
-            android:onClick="onOperationClick"
             style="@style/btnStyleText"/>
     <android.support.constraint.Guideline
             android:orientation="vertical"
