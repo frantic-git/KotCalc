@@ -16,8 +16,6 @@ import java.util.*
 
 class MainFragment : Fragment() {
 
-    private val calcLog = "calc_log"
-
     var operation: StringBuilder = StringBuilder()
     var num: StringBuilder = StringBuilder()
     var lastOperation: StringBuilder = StringBuilder()
@@ -29,19 +27,14 @@ class MainFragment : Fragment() {
     var isCLR: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d(calcLog,"onCreateView")
-        return inflater.inflate(R.layout.fragment_main, container, true)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        /*
-        tvResult!!.text = "OK"
-
-        Log.d(calcLog,"onCreate")
-        tvResult.setOnLongClickListener { onBtnDelLongClick() }
-        btnDel.setOnLongClickListener { onTvResultLongClick() }
+        tvResult.setOnLongClickListener { onTvResultLongClick() }
+        btnDel.setOnLongClickListener { onBtnDelLongClick() }
 
         btn1.setOnClickListener { onNumberClick(it) }
         btn2.setOnClickListener { onNumberClick(it) }
@@ -61,9 +54,18 @@ class MainFragment : Fragment() {
         btnMult.setOnClickListener { onOperationClick(it) }
         btnMinus.setOnClickListener { onOperationClick(it) }
         btnPlus.setOnClickListener { onOperationClick(it) }
-        */
 
-        lastOperation.append("=")
+        if (savedInstanceState != null) {
+            operation.append(savedInstanceState.getString("operation"))
+            num.append(savedInstanceState.getString("num"))
+            lastOperation.clear()
+            lastOperation.append(savedInstanceState.getString("lastOperation"))
+            result = savedInstanceState.getDouble("result")
+            isOperation = savedInstanceState.getBoolean("isOperation")
+            isDivByZero = savedInstanceState.getBoolean("isDivByZero")
+            isCLR = savedInstanceState.getBoolean("isCLR")
+            tvResult.text = operation
+        } else lastOperation.append("=")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -259,7 +261,7 @@ class MainFragment : Fragment() {
             return
         }
 
-        if (lastOperation.toString() == "=") {
+        if (lastOperation.toString() == "=" && num.isNotEmpty()) {
             num.deleteCharAt(num.length - 1)
             operation.deleteCharAt(operation.length - 1)
             return
@@ -271,11 +273,15 @@ class MainFragment : Fragment() {
             operation.deleteCharAt(operation.length - 1)
             num.append(takeDoubleWithoutTail(result))
             result = 0.0
+            isOperation = false
             return
         }
 
-        num.deleteCharAt(num.length - 1)
-        operation.deleteCharAt(operation.length - 1)
+        if (num.isNotEmpty()) {
+            num.deleteCharAt(num.length - 1)
+            operation.deleteCharAt(operation.length - 1)
+        }
+
         if (num.isEmpty() && lastOperation.toString() != "=") isOperation = true
     }
 
@@ -329,19 +335,4 @@ class MainFragment : Fragment() {
         return true
     }
 
-    /*
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        operation.append(savedInstanceState!!.getString("operation"))
-        num.append(savedInstanceState.getString("num"))
-        lastOperation.clear()
-        lastOperation.append(savedInstanceState.getString("lastOperation"))
-        result = savedInstanceState.getDouble("result")
-        isOperation = savedInstanceState.getBoolean("isOperation")
-        isDivByZero = savedInstanceState.getBoolean("isDivByZero")
-        isCLR = savedInstanceState.getBoolean("isCLR")
-
-        tvResult.text = operation
-    }
-    */
 }
