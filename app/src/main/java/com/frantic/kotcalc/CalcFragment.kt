@@ -1,0 +1,110 @@
+package com.frantic.kotcalc
+
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import com.frantic.kotcalc.domain.CalcPresenter
+import com.frantic.kotcalc.presentation.CalcView
+import kotlinx.android.synthetic.main.fragment_calc.*
+
+class CalcFragment : Fragment(), CalcView {
+
+    private lateinit var mPresenter: CalcPresenter
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_calc, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mPresenter = CalcPresenter(this)
+
+        tvResult.setOnLongClickListener { onTvResultLongClick() }
+        btnDel.setOnLongClickListener { onBtnDelLongClick() }
+
+        btn1.setOnClickListener { onNumberClick(it) }
+        btn2.setOnClickListener { onNumberClick(it) }
+        btn3.setOnClickListener { onNumberClick(it) }
+        btn4.setOnClickListener { onNumberClick(it) }
+        btn5.setOnClickListener { onNumberClick(it) }
+        btn6.setOnClickListener { onNumberClick(it) }
+        btn7.setOnClickListener { onNumberClick(it) }
+        btn8.setOnClickListener { onNumberClick(it) }
+        btn9.setOnClickListener { onNumberClick(it) }
+        btn0.setOnClickListener { onNumberClick(it) }
+        btnDot.setOnClickListener { onNumberClick(it) }
+
+        btnEq.setOnClickListener { onOperationClick(it) }
+        btnDel.setOnClickListener { onOperationClick(it) }
+        btnDiv.setOnClickListener { onOperationClick(it) }
+        btnMult.setOnClickListener { onOperationClick(it) }
+        btnMinus.setOnClickListener { onOperationClick(it) }
+        btnPlus.setOnClickListener { onOperationClick(it) }
+
+
+        if (savedInstanceState != null) {
+
+            val hashMap: HashMap<String, Any> = HashMap<String, Any>()
+            hashMap.put("operation", savedInstanceState.getString("operation") as String)
+            hashMap.put("num", savedInstanceState.getString("num") as String)
+            hashMap.put("lastOperation", savedInstanceState.getString("lastOperation") as String)
+            hashMap.put("result", savedInstanceState.getDouble("result"))
+            hashMap.put("isOperation", savedInstanceState.getBoolean("isOperation"))
+            hashMap.put("isDivByZero", savedInstanceState.getBoolean("isDivByZero"))
+            hashMap.put("isCLR", savedInstanceState.getBoolean("isCLR"))
+
+            mPresenter.restoreSaveInstanceState(hashMap)
+        } else mPresenter.initLastOperation()
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("operation", mPresenter.operation.toString())
+        outState.putString("num", mPresenter.num.toString())
+        outState.putString("lastOperation", mPresenter.lastOperation.toString())
+        outState.putDouble("result", mPresenter.result)
+        outState.putBoolean("isOperation", mPresenter.isOperation)
+        outState.putBoolean("isDivByZero", mPresenter.isDivByZero)
+        outState.putBoolean("isCLR", mPresenter.isCLR)
+    }
+
+    override fun showResult(result: String) {
+        tvResult.text = result
+    }
+
+    override fun setBtnDelText(text: String) {
+        btnDel.text = text
+    }
+
+    private fun onNumberClick(v: View) {
+        mPresenter.onNumberClick(v.id, (v as Button).text.toString())
+    }
+
+    private fun onOperationClick(v: View) {
+        mPresenter.onOperationClick(v.id, (v as Button).text.toString())
+    }
+
+    private fun onBtnDelLongClick(): Boolean {
+        mPresenter.onBtnDelLongClick()
+        return true
+    }
+
+    private fun onTvResultLongClick(): Boolean {
+        val clipBoard: ClipboardManager =
+            activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("", tvResult.text.toString())
+        clipBoard.primaryClip = clip
+        Toast.makeText(activity, "Copied to the ClipBoard", Toast.LENGTH_SHORT).show()
+        return true
+    }
+
+}
