@@ -25,7 +25,8 @@ class CalcFragment : Fragment(), CalcView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mPresenter = CalcPresenter(this)
+        mPresenter = CalcPresenter
+        mPresenter.mView = this
 
         tvResult.setOnLongClickListener { onTvResultLongClick() }
         btnDel.setOnLongClickListener { onBtnDelLongClick() }
@@ -49,32 +50,11 @@ class CalcFragment : Fragment(), CalcView {
         btnMinus.setOnClickListener { onOperationClick(it) }
         btnPlus.setOnClickListener { onOperationClick(it) }
 
-
-        if (savedInstanceState != null) {
-
-            val hashMap: HashMap<String, Any> = HashMap<String, Any>()
-            hashMap.put("operation", savedInstanceState.getString("operation") as String)
-            hashMap.put("num", savedInstanceState.getString("num") as String)
-            hashMap.put("lastOperation", savedInstanceState.getString("lastOperation") as String)
-            hashMap.put("result", savedInstanceState.getDouble("result"))
-            hashMap.put("isOperation", savedInstanceState.getBoolean("isOperation"))
-            hashMap.put("isDivByZero", savedInstanceState.getBoolean("isDivByZero"))
-            hashMap.put("isCLR", savedInstanceState.getBoolean("isCLR"))
-
-            mPresenter.restoreSaveInstanceState(hashMap)
-        } else mPresenter.initLastOperation()
-
+        tvResult.text = mPresenter.operation
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("operation", mPresenter.operation.toString())
-        outState.putString("num", mPresenter.num.toString())
-        outState.putString("lastOperation", mPresenter.lastOperation.toString())
-        outState.putDouble("result", mPresenter.result)
-        outState.putBoolean("isOperation", mPresenter.isOperation)
-        outState.putBoolean("isDivByZero", mPresenter.isDivByZero)
-        outState.putBoolean("isCLR", mPresenter.isCLR)
     }
 
     override fun showResult(result: String) {

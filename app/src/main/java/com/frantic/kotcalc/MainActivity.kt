@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         fragmentRouter = Router(supportFragmentManager, R.id.activity_main, ::finishActivity)
         if (savedInstanceState == null) {
-            fragmentRouter.navigateTo(Screens.FRAGMENTS.CALC_FRAGMENT)
+            fragmentRouter.navigateTo(Screens.FRAGMENTS.MAIN_FRAGMENT)
         }
     }
 

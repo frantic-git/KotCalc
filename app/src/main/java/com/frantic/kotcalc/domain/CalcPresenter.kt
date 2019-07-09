@@ -3,15 +3,14 @@ package com.frantic.kotcalc.domain
 import com.frantic.kotcalc.R
 import com.frantic.kotcalc.presentation.CalcView
 import java.util.*
-import kotlin.collections.HashMap
 
-class CalcPresenter(
-    private val mView: CalcView
-) {
+object CalcPresenter {
+
+    lateinit var mView: CalcView
 
     var operation: StringBuilder = StringBuilder()
     var num: StringBuilder = StringBuilder()
-    var lastOperation: StringBuilder = StringBuilder()
+    var lastOperation: StringBuilder = StringBuilder().append("=")
 
     var result: Double = 0.0
 
@@ -19,8 +18,8 @@ class CalcPresenter(
     var isDivByZero: Boolean = false
     var isCLR: Boolean = false
 
-    private val DEL: String = "DEL"
-    private val CLR: String = "CLR"
+    private const val DEL: String = "DEL"
+    private const val CLR: String = "CLR"
 
     fun onNumberClick(viewId: Int, name: String) {
 
@@ -261,34 +260,6 @@ class CalcPresenter(
         operation.clear()
         num.clear()
         result = 0.0
-    }
-
-    fun onSaveInstanceState() {
-        val outState: HashMap<String, Any> = HashMap<String, Any>()
-        outState.put("operation", operation.toString())
-        outState.put("num", num.toString())
-        outState.put("lastOperation", lastOperation.toString())
-        outState.put("result", result)
-        outState.put("isOperation", isOperation)
-        outState.put("isDivByZero", isDivByZero)
-        outState.put("isCLR", isCLR)
-    }
-
-    fun initLastOperation() {
-        lastOperation.append("=")
-    }
-
-    fun restoreSaveInstanceState(savedInstanceState: HashMap<String, Any>) {
-        operation.append(savedInstanceState.get("operation"))
-        num.append(savedInstanceState.get("num"))
-        lastOperation.clear()
-        lastOperation.append(savedInstanceState.get("lastOperation"))
-        result = savedInstanceState.get("result") as Double
-        isOperation = savedInstanceState.get("isOperation") as Boolean
-        isDivByZero = savedInstanceState.get("isDivByZero") as Boolean
-        isCLR = savedInstanceState.get("isCLR") as Boolean
-
-        mView.showResult(operation.toString())
     }
 
 }

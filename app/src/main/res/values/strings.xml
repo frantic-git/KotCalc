@@ -19,6 +19,7 @@
     <string name="plus">+</string>
     <string name="del">DEL</string>
     <string name="clr">CLR</string>
-
+    <string name="translate">Translate</string>
+    <string name="calc">Calc</string>
     <string name="dividedByZero">Divided by zero</string>
 </resources>

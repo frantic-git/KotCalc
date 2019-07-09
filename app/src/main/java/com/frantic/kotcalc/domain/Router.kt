@@ -18,6 +18,7 @@ class Router(
     fun replace(fragment: Screens.FRAGMENTS) {
         fragmentManager.beginTransaction()
             .replace(containerId, Screens.createFragment(fragment))
+            .addToBackStack(null)
             .commit()
     }
 
