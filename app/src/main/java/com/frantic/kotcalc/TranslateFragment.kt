@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.frantic.kotcalc.domain.TranslatePresenter
 import kotlinx.android.synthetic.main.fragment_translate.*
 
 class TranslateFragment : Fragment() {
@@ -17,9 +18,14 @@ class TranslateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnTranslate.setOnClickListener { btnTranslateClick() }
+        btnSave?.setOnClickListener { btnSaveClick() }
     }
 
     private fun btnTranslateClick() {
+        TranslatePresenter.btnTranslateClick()
+    }
 
+    private fun btnSaveClick() {
+        TranslatePresenter.btnSaveClick()
     }
 }
