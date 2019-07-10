@@ -22,14 +22,14 @@ class CalcPresenter() {
     var isDivByZero: Boolean = false
     var isCLR: Boolean = false
 
-    private val DEL: String = "DEL"
-    private val CLR: String = "CLR"
+    private val sDel: String = "DEL"
+    private val sClr: String = "CLR"
 
     fun onNumberClick(viewId: Int, name: String) {
 
         if (isCLR) {
             isCLR = false
-            mView.setBtnDelText(DEL)
+            mView.setBtnDelText(sDel)
         }
 
         var numberName = name
@@ -64,7 +64,7 @@ class CalcPresenter() {
 
         if (viewId != R.id.btnEq) {
             isCLR = false
-            mView.setBtnDelText(DEL)
+            mView.setBtnDelText(sDel)
         }
 
         if (isDivByZero) {
@@ -77,7 +77,7 @@ class CalcPresenter() {
     fun onBtnDelLongClick() {
         calcClear()
         isCLR = false
-        mView.setBtnDelText(DEL)
+        mView.setBtnDelText(sDel)
         mView.showResult(operation.toString())
     }
 
@@ -199,7 +199,7 @@ class CalcPresenter() {
         operation.append(num)
 
         isCLR = true
-        mView.setBtnDelText(CLR)
+        mView.setBtnDelText(sClr)
     }
 
     private fun calcDelete() {
@@ -207,7 +207,7 @@ class CalcPresenter() {
         if (isCLR) {
             calcClear()
             isCLR = false
-            mView.setBtnDelText(DEL)
+            mView.setBtnDelText(sDel)
             return
         }
 
@@ -265,7 +265,5 @@ class CalcPresenter() {
         num.clear()
         result = 0.0
     }
-
-
 
 }

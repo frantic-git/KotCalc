@@ -25,10 +25,22 @@ class CalcFragment : Fragment(), CalcView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ((activity as MainActivity).fragmentRouter.savedCalcPresenter != null){
-            mPresenter = (activity as MainActivity).fragmentRouter.savedCalcPresenter!!
+        val lastPresenter: CalcPresenter? = (activity as MainActivity).fragmentRouter.lastCalcPresenter
+
+        if (savedInstanceState != null) {
+            mPresenter = CalcPresenter(this)
+            mPresenter.operation.append(savedInstanceState.getString("operation"))
+            mPresenter.num.append(savedInstanceState.getString("num"))
+            mPresenter.lastOperation.clear()
+            mPresenter.lastOperation.append(savedInstanceState.getString("lastOperation"))
+            mPresenter.result = savedInstanceState.getDouble("result")
+            mPresenter.isCLR = savedInstanceState.getBoolean("isCLR")
+            mPresenter.isOperation = savedInstanceState.getBoolean("isOperation")
+            mPresenter.isDivByZero = savedInstanceState.getBoolean("isDivByZero")
+        } else if (lastPresenter != null) {
+            mPresenter = lastPresenter
             mPresenter.mView = this
-        }else{
+        } else {
             mPresenter = CalcPresenter(this)
         }
 
@@ -59,6 +71,13 @@ class CalcFragment : Fragment(), CalcView {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putString("operation", mPresenter.operation.toString())
+        outState.putString("num", mPresenter.num.toString())
+        outState.putString("lastOperation", mPresenter.lastOperation.toString())
+        outState.putDouble("result", mPresenter.result)
+        outState.putBoolean("isOperation", mPresenter.isOperation)
+        outState.putBoolean("isCLR", mPresenter.isCLR)
+        outState.putBoolean("isDivByZero", mPresenter.isDivByZero)
     }
 
     override fun showResult(result: String) {

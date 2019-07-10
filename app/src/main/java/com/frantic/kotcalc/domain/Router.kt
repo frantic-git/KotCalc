@@ -2,6 +2,7 @@ package com.frantic.kotcalc.domain
 
 import android.support.v4.app.FragmentManager
 import com.frantic.kotcalc.CalcFragment
+import com.frantic.kotcalc.TranslateFragment
 
 class Router(
     private val fragmentManager: FragmentManager,
@@ -9,7 +10,8 @@ class Router(
     private val finishActivity: () -> Unit
 ) {
 
-    var savedCalcPresenter: CalcPresenter? = null
+    var lastCalcPresenter: CalcPresenter? = null
+    var lastTranslatePresenter: TranslatePresenter? = null
 
     fun navigateTo(fragment: Screens.FRAGMENTS) {
         fragmentManager.beginTransaction()
@@ -30,8 +32,9 @@ class Router(
             finishActivity.invoke()
         } else {
             val curFragment = fragmentManager.fragments.last()
-            if (curFragment is CalcFragment) {
-                savedCalcPresenter = curFragment.mPresenter
+            when (curFragment) {
+                is CalcFragment -> lastCalcPresenter = curFragment.mPresenter
+                is TranslateFragment -> lastTranslatePresenter = curFragment.mPresenter
             }
             fragmentManager.popBackStack()
         }
