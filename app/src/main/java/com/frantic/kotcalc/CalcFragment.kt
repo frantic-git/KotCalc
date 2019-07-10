@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_calc.*
 
 class CalcFragment : Fragment(), CalcView {
 
-    private lateinit var mPresenter: CalcPresenter
+    lateinit var mPresenter: CalcPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calc, container, false)
@@ -25,8 +25,12 @@ class CalcFragment : Fragment(), CalcView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mPresenter = CalcPresenter
-        mPresenter.mView = this
+        if ((activity as MainActivity).fragmentRouter.savedCalcPresenter != null){
+            mPresenter = (activity as MainActivity).fragmentRouter.savedCalcPresenter!!
+            mPresenter.mView = this
+        }else{
+            mPresenter = CalcPresenter(this)
+        }
 
         tvResult.setOnLongClickListener { onTvResultLongClick() }
         btnDel.setOnLongClickListener { onBtnDelLongClick() }

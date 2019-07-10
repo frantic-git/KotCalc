@@ -4,7 +4,11 @@ import com.frantic.kotcalc.R
 import com.frantic.kotcalc.presentation.CalcView
 import java.util.*
 
-object CalcPresenter {
+class CalcPresenter() {
+
+    constructor(_mView: CalcView) : this() {
+        mView = _mView
+    }
 
     lateinit var mView: CalcView
 
@@ -18,8 +22,8 @@ object CalcPresenter {
     var isDivByZero: Boolean = false
     var isCLR: Boolean = false
 
-    private const val DEL: String = "DEL"
-    private const val CLR: String = "CLR"
+    private val DEL: String = "DEL"
+    private val CLR: String = "CLR"
 
     fun onNumberClick(viewId: Int, name: String) {
 
@@ -261,5 +265,7 @@ object CalcPresenter {
         num.clear()
         result = 0.0
     }
+
+
 
 }
