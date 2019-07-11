@@ -7,7 +7,7 @@ import com.frantic.kotcalc.TranslateFragment
 
 object Screens {
 
-    enum class FRAGMENTS(fragmentName: String) {
+    enum class FRAGMENTS(val fragmentName: String) {
         MAIN_FRAGMENT("MAIN_FRAGMENT"),
         CALC_FRAGMENT("CALC_FRAGMENT"),
         TRANSLATE_FRAGMENT("TRANSLATE_FRAGMENT")

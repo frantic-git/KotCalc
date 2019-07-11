@@ -33,10 +33,6 @@ class TranslateFragment : Fragment(), TranslateView {
         btnSave?.setOnClickListener { btnSaveClick() }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     private fun btnTranslateClick() {
         mPresenter.btnTranslateClick()
     }

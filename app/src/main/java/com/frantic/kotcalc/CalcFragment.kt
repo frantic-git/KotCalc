@@ -25,24 +25,7 @@ class CalcFragment : Fragment(), CalcView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val lastPresenter: CalcPresenter? = (activity as MainActivity).fragmentRouter.lastCalcPresenter
-
-        if (savedInstanceState != null) {
-            mPresenter = CalcPresenter(this)
-            mPresenter.operation.append(savedInstanceState.getString("operation"))
-            mPresenter.num.append(savedInstanceState.getString("num"))
-            mPresenter.lastOperation.clear()
-            mPresenter.lastOperation.append(savedInstanceState.getString("lastOperation"))
-            mPresenter.result = savedInstanceState.getDouble("result")
-            mPresenter.isCLR = savedInstanceState.getBoolean("isCLR")
-            mPresenter.isOperation = savedInstanceState.getBoolean("isOperation")
-            mPresenter.isDivByZero = savedInstanceState.getBoolean("isDivByZero")
-        } else if (lastPresenter != null) {
-            mPresenter = lastPresenter
-            mPresenter.mView = this
-        } else {
-            mPresenter = CalcPresenter(this)
-        }
+        onRestoreInstanceState(savedInstanceState)
 
         tvResult.setOnLongClickListener { onTvResultLongClick() }
         btnDel.setOnLongClickListener { onBtnDelLongClick() }
@@ -78,6 +61,28 @@ class CalcFragment : Fragment(), CalcView {
         outState.putBoolean("isOperation", mPresenter.isOperation)
         outState.putBoolean("isCLR", mPresenter.isCLR)
         outState.putBoolean("isDivByZero", mPresenter.isDivByZero)
+    }
+
+    private fun onRestoreInstanceState(savedInstanceState: Bundle?){
+
+        val lastPresenter: CalcPresenter? = (activity as MainActivity).fragmentRouter.lastCalcPresenter
+
+        if (savedInstanceState != null) {
+            mPresenter = CalcPresenter(this)
+            mPresenter.operation.append(savedInstanceState.getString("operation"))
+            mPresenter.num.append(savedInstanceState.getString("num"))
+            mPresenter.lastOperation.clear()
+            mPresenter.lastOperation.append(savedInstanceState.getString("lastOperation"))
+            mPresenter.result = savedInstanceState.getDouble("result")
+            mPresenter.isCLR = savedInstanceState.getBoolean("isCLR")
+            mPresenter.isOperation = savedInstanceState.getBoolean("isOperation")
+            mPresenter.isDivByZero = savedInstanceState.getBoolean("isDivByZero")
+        } else if (lastPresenter != null) {
+            mPresenter = lastPresenter
+            mPresenter.mView = this
+        } else {
+            mPresenter = CalcPresenter(this)
+        }
     }
 
     override fun showResult(result: String) {
