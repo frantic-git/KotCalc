@@ -1,6 +1,7 @@
 package com.frantic.kotcalc
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -42,7 +43,8 @@ class RandomFoxFragment: Fragment(), RandomFoxView {
         mPresenter.btnSaveOnClick()
     }
 
-    override fun showFox(bitmap: Bitmap) {
+    override fun showFox(byteArray: ByteArray) {
+        val bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.size)
         imageView.setImageBitmap(bitmap)
     }
 }

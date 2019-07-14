@@ -1,6 +1,5 @@
 package com.frantic.kotcalc.domain
 
-import android.graphics.BitmapFactory
 import com.frantic.kotcalc.data.RandomFoxAPI
 import com.frantic.kotcalc.presentation.RandomFoxView
 import kotlinx.coroutines.CoroutineScope
@@ -48,13 +47,12 @@ class RandomFoxPresenter() {
                 val imageName = imageLink.substringAfter("images/")
 
                 try{
-                    val inputStream = responseBodyRandomFoxAPI
+                    val byteArray = responseBodyRandomFoxAPI
                         .getImage(imageName)
                         .body()
-                        ?.byteStream()
-                    if(inputStream != null) {
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        mView.showFox(bitmap)
+                        ?.bytes()
+                    if(byteArray != null) {
+                        mView.showFox(byteArray)
                     }
                 } catch (e: Exception) {
                     println(e.localizedMessage)
