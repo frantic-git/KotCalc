@@ -21,6 +21,9 @@
     <string name="clr">CLR</string>
     <string name="translate">Translate</string>
     <string name="save">Save</string>
-    <string name="calc">Calc</string>
     <string name="dividedByZero">Divided by zero</string>
+    <string name="get_random_fox">Get random Fox</string>
+    <string name="random_fox_image">random fox image</string>
+    <string name="calc">Calc</string>
+
 </resources>

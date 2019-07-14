@@ -7,20 +7,20 @@
 
     <Button
             android:text="@string/calc"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnToTranslate"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btnToCalc"/>
     <Button
-            android:text="@string/translate"
-            android:layout_width="0dp"
+            android:text="@string/get_random_fox"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnToCalc"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnToCalc"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/btnToTranslate"/>
+
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/btnToRandomFox"/>
 </android.support.constraint.ConstraintLayout>

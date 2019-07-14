@@ -2,7 +2,7 @@ package com.frantic.kotcalc.domain
 
 import android.support.v4.app.FragmentManager
 import com.frantic.kotcalc.CalcFragment
-import com.frantic.kotcalc.TranslateFragment
+import com.frantic.kotcalc.RandomFoxFragment
 
 class Router(
     private val fragmentManager: FragmentManager,
@@ -11,7 +11,7 @@ class Router(
 ) {
 
     var lastCalcPresenter: CalcPresenter? = null
-    var lastTranslatePresenter: TranslatePresenter? = null
+    var lastRandomFoxPresenter: RandomFoxPresenter? = null
 
     fun navigateTo(fragment: Screens.FRAGMENTS) {
         fragmentManager.beginTransaction()
@@ -34,7 +34,7 @@ class Router(
             val curFragment = fragmentManager.fragments.last()
             when (curFragment) {
                 is CalcFragment -> lastCalcPresenter = curFragment.mPresenter
-                is TranslateFragment -> lastTranslatePresenter = curFragment.mPresenter
+                is RandomFoxFragment -> lastRandomFoxPresenter = curFragment.mPresenter
             }
             fragmentManager.popBackStack()
         }

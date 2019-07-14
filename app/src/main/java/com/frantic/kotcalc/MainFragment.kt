@@ -18,7 +18,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnToCalc?.setOnClickListener { onBtnToCalcClick() }
-        btnToTranslate?.setOnClickListener { onBtnToTranslateClick() }
+        btnToRandomFox?.setOnClickListener { onBtnToTranslateClick() }
     }
 
     private fun onBtnToCalcClick() {
@@ -26,6 +26,6 @@ class MainFragment : Fragment() {
     }
 
     private fun onBtnToTranslateClick() {
-        (activity as MainActivity).fragmentRouter.replace(Screens.FRAGMENTS.TRANSLATE_FRAGMENT)
+        (activity as MainActivity).fragmentRouter.replace(Screens.FRAGMENTS.RANDOM_FOX_FRAGMENT)
     }
 }

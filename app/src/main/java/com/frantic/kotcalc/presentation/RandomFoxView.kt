@@ -1,4 +1,4 @@
 package com.frantic.kotcalc.presentation
 
-interface TranslateView {
+interface RandomFoxView {
 }
