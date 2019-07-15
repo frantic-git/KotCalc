@@ -1,7 +1,8 @@
-package com.frantic.kotcalc
+package com.frantic.kotcalc.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.frantic.kotcalc.R
 import com.frantic.kotcalc.domain.CalcPresenter
 import com.frantic.kotcalc.domain.Router
 import com.frantic.kotcalc.domain.Screens

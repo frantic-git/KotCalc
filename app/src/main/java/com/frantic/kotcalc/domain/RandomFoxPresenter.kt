@@ -1,11 +1,10 @@
 package com.frantic.kotcalc.domain
 
+import com.frantic.kotcalc.App
 import com.frantic.kotcalc.data.RandomFoxAPI
+import com.frantic.kotcalc.data.db.entity.FoxEntity
 import com.frantic.kotcalc.presentation.RandomFoxView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,6 +18,7 @@ class RandomFoxPresenter() {
 
     lateinit var mView: RandomFoxView
     var byteArray: ByteArray? = null
+    var imageName: String? = null
 
     constructor(_mView: RandomFoxView) : this() {
         mView = _mView
@@ -45,11 +45,11 @@ class RandomFoxPresenter() {
                 ?.image
 
             if (imageLink != null) {
-                val imageName = imageLink.substringAfter("images/")
+                imageName = imageLink.substringAfter("images/")
 
                 try {
                     byteArray = responseBodyRandomFoxAPI
-                        .getImage(imageName)
+                        .getImage(imageName!!)
                         .body()
                         ?.bytes()
                     if (byteArray != null) {
@@ -60,11 +60,14 @@ class RandomFoxPresenter() {
                 }
             }
         }
-
     }
 
     fun btnSaveOnClick() {
-
+        if (imageName != null) {
+            GlobalScope.launch(Dispatchers.IO) {
+                App.foxDataBase?.foxDao()?.insertFox(FoxEntity(null, imageName!!))
+            }
+        }
     }
 
     fun cancelAllWork() {

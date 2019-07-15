@@ -1,10 +1,10 @@
-package com.frantic.kotcalc
+package com.frantic.kotcalc.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.frantic.kotcalc.R
 import com.frantic.kotcalc.domain.Screens
 import kotlinx.android.synthetic.main.fragment_main.*
 

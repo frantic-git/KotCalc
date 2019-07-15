@@ -1,12 +1,12 @@
-package com.frantic.kotcalc
+package com.frantic.kotcalc.presentation
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.frantic.kotcalc.R
 import com.frantic.kotcalc.domain.RandomFoxPresenter
-import com.frantic.kotcalc.presentation.RandomFoxView
 import kotlinx.android.synthetic.main.fragment_randomfox.*
 
 class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
@@ -33,6 +33,7 @@ class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putByteArray("byteArray", mPresenter.byteArray)
+        outState.putString("imageName", mPresenter.imageName)
     }
 
     private fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -42,6 +43,7 @@ class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
         if (savedInstanceState != null) {
             mPresenter = RandomFoxPresenter(this)
             mPresenter.byteArray = savedInstanceState.getByteArray("byteArray")
+            mPresenter.imageName = savedInstanceState.getString("imageName")
         } else if (lastPresenter != null) {
             mPresenter = lastPresenter
             mPresenter.mView = this
@@ -62,4 +64,5 @@ class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
         val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         imageView.setImageBitmap(bitmap)
     }
+
 }

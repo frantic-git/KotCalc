@@ -1,8 +1,7 @@
 package com.frantic.kotcalc.domain
 
-import androidx.fragment.app.FragmentManager
-import com.frantic.kotcalc.CalcFragment
-import com.frantic.kotcalc.RandomFoxFragment
+import com.frantic.kotcalc.presentation.CalcFragment
+import com.frantic.kotcalc.presentation.RandomFoxFragment
 
 class Router(
     private val fragmentManager: androidx.fragment.app.FragmentManager,

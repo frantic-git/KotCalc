@@ -1,4 +1,4 @@
-package com.frantic.kotcalc
+package com.frantic.kotcalc.presentation
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import com.frantic.kotcalc.R
 import com.frantic.kotcalc.domain.CalcPresenter
-import com.frantic.kotcalc.presentation.CalcView
 import kotlinx.android.synthetic.main.fragment_calc.*
 
 class CalcFragment : Fragment(), CalcView {

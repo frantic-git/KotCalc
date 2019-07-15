@@ -1,9 +1,9 @@
 package com.frantic.kotcalc.domain
 
 import androidx.fragment.app.Fragment
-import com.frantic.kotcalc.CalcFragment
-import com.frantic.kotcalc.MainFragment
-import com.frantic.kotcalc.RandomFoxFragment
+import com.frantic.kotcalc.presentation.CalcFragment
+import com.frantic.kotcalc.presentation.MainFragment
+import com.frantic.kotcalc.presentation.RandomFoxFragment
 
 object Screens {
 

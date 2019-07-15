@@ -1,6 +1,6 @@
 package com.frantic.kotcalc
 
-import android.util.Log
+import com.frantic.kotcalc.presentation.MainActivity
 import org.junit.Test
 
 import org.junit.Assert.*
