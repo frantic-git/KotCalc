@@ -18,8 +18,9 @@ class RandomFoxPresenter() {
     private lateinit var responseBodyRandomFoxAPI: RandomFoxAPI
 
     lateinit var mView: RandomFoxView
+    var byteArray: ByteArray? = null
 
-    constructor(_mView : RandomFoxView) : this(){
+    constructor(_mView: RandomFoxView) : this() {
         mView = _mView
 
         gsonRandomFoxAPI = Retrofit
@@ -35,7 +36,7 @@ class RandomFoxPresenter() {
             .create(RandomFoxAPI::class.java)
     }
 
-    fun btnGetRandomFoxOnClick(){
+    fun btnGetRandomFoxOnClick() {
 
         viewModelScope.launch {
             val imageLink = gsonRandomFoxAPI
@@ -43,16 +44,16 @@ class RandomFoxPresenter() {
                 .body()
                 ?.image
 
-            if(imageLink != null){
+            if (imageLink != null) {
                 val imageName = imageLink.substringAfter("images/")
 
-                try{
-                    val byteArray = responseBodyRandomFoxAPI
+                try {
+                    byteArray = responseBodyRandomFoxAPI
                         .getImage(imageName)
                         .body()
                         ?.bytes()
-                    if(byteArray != null) {
-                        mView.showFox(byteArray)
+                    if (byteArray != null) {
+                        mView.showFox(byteArray!!)
                     }
                 } catch (e: Exception) {
                     println(e.localizedMessage)
@@ -62,7 +63,7 @@ class RandomFoxPresenter() {
 
     }
 
-    fun btnSaveOnClick(){
+    fun btnSaveOnClick() {
 
     }
 

@@ -1,6 +1,6 @@
 package com.frantic.kotcalc
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.frantic.kotcalc.domain.CalcPresenter
 import com.frantic.kotcalc.domain.Router
