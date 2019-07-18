@@ -20,10 +20,10 @@ class FoxListPresenter() {
         val itemList = mutableListOf<FoxItem>()
 
         val job = GlobalScope.launch(Dispatchers.IO) {
-            val foxList: List<FoxEntity>? = App.foxDataBase?.foxDao()?.getAllFox()
+            val foxList: List<FoxItem>? = App.foxDataBase?.foxDao()?.getAllFoxItem()
             if (foxList != null) {
                 for (foxItem in foxList) {
-                    itemList.add(FoxItem(foxItem.foxName))
+                    itemList.add(foxItem)
                 }
             }
         }

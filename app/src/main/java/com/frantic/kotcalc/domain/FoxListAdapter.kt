@@ -1,5 +1,6 @@
 package com.frantic.kotcalc.domain
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,8 @@ class FoxListAdapter : RecyclerView.Adapter<FoxListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: FoxListAdapter.ViewHolder, position: Int) {
         holder.cardTextView.text = itemsList[position].name
+        val byteArray = itemsList[position].image
+        holder.itemImageView.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size))
     }
 
     override fun getItemCount(): Int = itemsList.size
@@ -29,5 +32,6 @@ class FoxListAdapter : RecyclerView.Adapter<FoxListAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val cardLayout = view
         val cardTextView = view.cardTextView
+        val itemImageView = view.item_image_view
     }
 }

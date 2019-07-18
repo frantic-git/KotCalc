@@ -57,11 +57,11 @@ class RandomFoxPresenter() {
                             mView.showFox(byteArray!!)
                         }
                     } catch (e: Exception) {
-                        println(e.localizedMessage)
+                        mView.showMessage(e.localizedMessage)
                     }
                 }
             } catch (e: Exception) {
-                println(e.localizedMessage)
+                mView.showMessage(e.localizedMessage)
             }
         }
     }

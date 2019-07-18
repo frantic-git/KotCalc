@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.frantic.kotcalc.R
 import com.frantic.kotcalc.domain.RandomFoxPresenter
 import com.frantic.kotcalc.domain.Screens
@@ -62,13 +63,17 @@ class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
         mPresenter.btnSaveOnClick()
     }
 
-    private fun btnListOnClick(){
+    private fun btnListOnClick() {
         (activity as MainActivity).fragmentRouter.replace(Screens.FRAGMENTS.FOX_LIST_FRAGMENT)
     }
 
     override fun showFox(byteArray: ByteArray) {
         val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         imageView.setImageBitmap(bitmap)
+    }
+
+    override fun showMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
 }
