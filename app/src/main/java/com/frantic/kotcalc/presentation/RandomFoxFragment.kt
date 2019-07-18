@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.frantic.kotcalc.R
 import com.frantic.kotcalc.domain.RandomFoxPresenter
+import com.frantic.kotcalc.domain.Screens
 import kotlinx.android.synthetic.main.fragment_randomfox.*
 
 class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
@@ -24,6 +25,7 @@ class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
 
         btnGetRandomFox.setOnClickListener { btnGetRandomFoxOnClick() }
         btnSave.setOnClickListener { btnSaveOnClick() }
+        btnList.setOnClickListener { btnListOnClick() }
 
         if (mPresenter.byteArray != null) {
             showFox(mPresenter.byteArray!!)
@@ -58,6 +60,10 @@ class RandomFoxFragment : androidx.fragment.app.Fragment(), RandomFoxView {
 
     private fun btnSaveOnClick() {
         mPresenter.btnSaveOnClick()
+    }
+
+    private fun btnListOnClick(){
+        (activity as MainActivity).fragmentRouter.replace(Screens.FRAGMENTS.FOX_LIST_FRAGMENT)
     }
 
     override fun showFox(byteArray: ByteArray) {

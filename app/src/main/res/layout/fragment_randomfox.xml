@@ -23,6 +23,16 @@
             app:layout_constraintStart_toEndOf="@id/btnGetRandomFox"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/btnSave"/>
+    <Button
+            android:text="@string/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@id/btnSave"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/btnList"/>
+
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +44,6 @@
             app:layout_constraintTop_toBottomOf="@id/btnGetRandomFox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:srcCompat="@drawable/ic_launcher_background"
             android:scaleType="centerCrop"
             android:id="@+id/imageView"
             android:contentDescription="@string/random_fox_image"/>

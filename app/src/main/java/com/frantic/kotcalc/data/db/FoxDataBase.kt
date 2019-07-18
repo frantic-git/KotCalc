@@ -6,8 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.frantic.kotcalc.data.db.dao.FoxDAO
 import com.frantic.kotcalc.data.db.entity.FoxEntity
+import com.frantic.kotcalc.data.db.entity.FoxImageEntity
 
-@Database(entities = [FoxEntity::class], version = 1)
+@Database(entities = [FoxEntity::class, FoxImageEntity::class], version = 1, exportSchema = false)
 abstract class FoxDataBase : RoomDatabase() {
 
     abstract fun foxDao(): FoxDAO
@@ -22,7 +23,7 @@ abstract class FoxDataBase : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context,
                         FoxDataBase::class.java,
-                        Tables.FOX_TABLE
+                        "FoxDataBase"
                     ).build()
                 }
             }

@@ -39,33 +39,37 @@ class RandomFoxPresenter() {
     fun btnGetRandomFoxOnClick() {
 
         viewModelScope.launch {
-            val imageLink = gsonRandomFoxAPI
-                .getFloof()
-                .body()
-                ?.image
+            try {
+                val imageLink = gsonRandomFoxAPI
+                    .getFloof()
+                    .body()
+                    ?.image
 
-            if (imageLink != null) {
-                imageName = imageLink.substringAfter("images/")
+                if (imageLink != null) {
+                    imageName = imageLink.substringAfter("images/")
 
-                try {
-                    byteArray = responseBodyRandomFoxAPI
-                        .getImage(imageName!!)
-                        .body()
-                        ?.bytes()
-                    if (byteArray != null) {
-                        mView.showFox(byteArray!!)
+                    try {
+                        byteArray = responseBodyRandomFoxAPI
+                            .getImage(imageName!!)
+                            .body()
+                            ?.bytes()
+                        if (byteArray != null) {
+                            mView.showFox(byteArray!!)
+                        }
+                    } catch (e: Exception) {
+                        println(e.localizedMessage)
                     }
-                } catch (e: Exception) {
-                    println(e.localizedMessage)
                 }
+            } catch (e: Exception) {
+                println(e.localizedMessage)
             }
         }
     }
 
     fun btnSaveOnClick() {
-        if (imageName != null) {
+        if (imageName != null && byteArray != null) {
             GlobalScope.launch(Dispatchers.IO) {
-                App.foxDataBase?.foxDao()?.insertFox(FoxEntity(null, imageName!!))
+                App.foxDataBase?.foxDao()?.insertFoxTransaction(FoxEntity(null, imageName!!), byteArray!!)
             }
         }
     }

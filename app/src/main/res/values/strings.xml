@@ -25,5 +25,7 @@
     <string name="get_random_fox">Get random Fox</string>
     <string name="random_fox_image">random fox image</string>
     <string name="calc">Calc</string>
+    <string name="random_fox">Random Fox</string>
+    <string name="list">List</string>
 
 </resources>
